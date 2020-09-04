@@ -8,9 +8,3 @@ inputs:
     src: ./src
     hook: npm run build
     dist: ./dist
-
-provider:
-  name: google
-  runtime: nodejs
-  project: auto-zoom-287116
-  credentials: ~/.gcloud/auto-zoom-287116-2ef1d0c78e5b.json
