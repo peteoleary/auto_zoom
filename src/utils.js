@@ -43,4 +43,16 @@ function dateAdd(date, interval, units) {
     return arr;
   }
 
-  export {dateAdd, formatValue, removeFromArray}
+  //https://stackoverflow.com/questions/21147832/convert-camel-case-to-human-readable-string
+  function toCapitalizedWords(name) {
+    var words = name.match(/[A-Za-z][a-z]*/g) || [];
+
+    return words.map(capitalize).join(" ");
+}
+
+function capitalize(word) {
+    return word.charAt(0).toUpperCase() + word.substring(1);
+}
+
+
+  export {dateAdd, formatValue, removeFromArray, toCapitalizedWords}

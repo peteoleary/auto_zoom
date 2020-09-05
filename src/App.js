@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import useSound from 'use-sound'
 import schoolBellSound from './sounds/school-bell-sound.mp3'
 
 import Login from './Login'
-import {dateAdd, formatValue, removeFromArray} from './utils'
+import {dateAdd, formatValue, removeFromArray, toCapitalizedWords} from './utils'
 
 const axios = require('axios')
 
 const SoundElement = (props) => {
-  const [play] = useSound(schoolBellSound);
+  const [play] = useSound(props.playSound)
+  const [soundEnabled, setSoundEnabled] = useState(false)
 
-  if (props.playSound)
-    return <button className='button' onLoad={play}>Sound!</button>
+  if (soundEnabled)
+    return <button onLoad={() => play()} className='button' onClick={() => setSoundEnabled(false)}>Sound</button>
   else
-    return <button className='button'>No sound</button>
+    return <button className='button' onClick={() => setSoundEnabled(true)}>No Sound</button>
 };
 
 const TableDisplay = (props) => {
@@ -26,11 +27,11 @@ const TableDisplay = (props) => {
 
     removeFromArray(keys, 'id')
 
-    return (<div className="eventsTable"><table><thead>
+    return (<div className="eventsTableWrapper"><table className="eventsTable"><thead>
       <tr>
       {
         keys.map((key) => {
-        return (<th>{key}</th>)
+        return (<th>{toCapitalizedWords(key)}</th>)
         })
       }
       </tr>
@@ -189,11 +190,11 @@ export default class App extends Component {
           <div className='header buttonContainer'>
           <button className='button' onClick={this.doLogout.bind(this)}>Logout</button>
           <button className='button' onClick={this.addTestEvent.bind(this)}>Add Test Event</button>
-          <SoundElement />
+          <SoundElement playSound={this.state.play_sound}/>
           </div>
 
           <div className="tagline">
-            Date: {this.state.curTime}
+            Current time: {this.state.curTime}
           </div>
           
           <TableDisplay data={this.state.zoom_classes} />

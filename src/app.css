@@ -1,11 +1,3 @@
-@font-face {
-  font-family: 'serverless';
-  src: url('./fonts/serverless-regular.woff2') format('woff2'),
-    url('./fonts/serverless-regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
 html,
 body {
   display: flex;
@@ -17,8 +9,7 @@ body {
   padding: 0;
   line-height: normal;
   background: var(--mainBg);
-  font-family: 'Comic Sans MS', 'HelveticaNeue-Regular', 'Helvetica Neue Regular', 'Helvetica Neue',
-    Helvetica, Arial, 'Lucida Grande', sans-serif;
+  font-family: 'Comic Sans MS', Helvetica, Arial, 'Lucida Grande', sans-serif;
   font-weight: 300;
   font-size: 14px;
   line-height: 20px;
@@ -32,9 +23,31 @@ table {
   color: #000000;
 }
 
+
 .eventsTable {
-  max-width: 700px;
-  background: url(images/hero.png) no-repeat center center fixed; 
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.eventsTable td, .eventsTable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.eventsTable tr:nth-child(even){background-color: #f2f2f2;}
+
+.eventsTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.eventsTableWrapper {
+  margin-top: 11px;
+  max-width: 100%;
+  background: url(images/hero_50.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
