@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import imageHero from './images/hero.png'
 import useSound from 'use-sound'
 import schoolBellSound from './sounds/school-bell-sound.mp3'
 
@@ -12,9 +11,9 @@ const SoundElement = (props) => {
   const [play] = useSound(schoolBellSound);
 
   if (props.playSound)
-    return <div className="tagline" onLoad={play}>Sound!</div>
+    return <button className='button' onLoad={play}>Sound!</button>
   else
-    return <div className="tagline">No sound</div>
+    return <button className='button'>No sound</button>
 };
 
 const TableDisplay = (props) => {
@@ -27,7 +26,7 @@ const TableDisplay = (props) => {
 
     removeFromArray(keys, 'id')
 
-    return (<table><thead>
+    return (<div className="eventsTable"><table><thead>
       <tr>
       {
         keys.map((key) => {
@@ -48,7 +47,7 @@ const TableDisplay = (props) => {
         })
       }
       </tbody>
-      </table>
+      </table></div>
     )
   } else {
     return <div className="tagline">No Zoom calendar events</div>
@@ -190,16 +189,13 @@ export default class App extends Component {
           <div className='header buttonContainer'>
           <button className='button' onClick={this.doLogout.bind(this)}>Logout</button>
           <button className='button' onClick={this.addTestEvent.bind(this)}>Add Test Event</button>
-          </div>
-          <div className="hero">
-            <img src={imageHero} />
+          <SoundElement />
           </div>
 
           <div className="tagline">
             Date: {this.state.curTime}
-            <button>Click me for sound</button>
           </div>
-          <SoundElement playSound={this.state.play_sound}/>
+          
           <TableDisplay data={this.state.zoom_classes} />
         </div>
       )

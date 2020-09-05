@@ -7,8 +7,7 @@
 }
 
 html,
-body,
-div {
+body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -28,44 +27,35 @@ div {
   letter-spacing: 0.25px;
 }
 
-html,
-body {
-  background: #c4c5ca;
-}
 
 table {
-  color: #000000
+  color: #000000;
+}
+
+.eventsTable {
+  max-width: 700px;
+  background: url(images/hero.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .container {
   flex-direction: column;
   height: 100%;
-  width: 100%;
+  width: 800px;
   margin: 0;
   padding: 30px 50px 50px 50px;
 }
 
-.hero {
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  min-height: 40vh;
-  animation-duration: 2000ms;
-  animation-name: fadeIn;
-}
-
-.hero img {
-  max-height: 40vh;
-  pointer-events: none;
-}
-
 .tagline {
-  align-items: center;
+  align-items: left;
   height: auto;
   margin-top: 40px;
   color: #000000;
   font-size: 18px;
-  text-align: center;
+  text-align: left;
   opacity: 0;
   animation-fill-mode: forwards;
   animation-delay: 500ms;
@@ -74,9 +64,10 @@ table {
 }
 
 .buttonContainer {
+  flex-direction: row;
   height: auto;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: left;
   margin-top: 20px;
   margin-bottom: 20px;
   opacity: 0;
@@ -87,14 +78,19 @@ table {
 }
 
 .button {
-  flex-direction: row;
   height: 40px;
-  width: 200px;
+  margin-right: 11px;
   border-radius: 4px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
+  border: 3px solid #777777;
   font-size: 26px;
-  color: #ffffff;
+  color: #111111;
   transition: all ease 200ms;
+}
+
+.buttonContainer:after {
+  content: "";
+  clear: both;
+  display: table;
 }
 
 .button:hover {
@@ -106,33 +102,8 @@ table {
   border-color: rgba(255, 255, 255, 0.3);
 }
 
-.buttonInner {
-  flex-direction: row;
-  align-items: center;
-  height: auto;
-  width: 100%;
-}
-
-.buttonLeft {
-  align-items: flex-end;
-  padding-top: 30px;
-  padding-right: 20px;
-  color: #fd5750;
-  font-size: 62px;
-  user-select: none;
-}
-
-.buttonRight {
-  align-items: flex-start;
-  padding-top: 36px;
-  color: #ffffff;
-  font-size: 20px;
-  user-select: none;
-}
-
 .header {
   width: 100%;
-  height: 27px;
 }
 
 /**
