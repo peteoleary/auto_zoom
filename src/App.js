@@ -4,6 +4,7 @@ import schoolBellSound from './sounds/school-bell-sound.mp3'
 
 import Login from './Login'
 import {dateAdd, formatValue, removeFromArray, toCapitalizedWords} from './utils'
+import queryString from 'query-string'
 
 const axios = require('axios')
 
@@ -60,24 +61,16 @@ const auto_zoom_token_key = 'auto-zoom-token'
 export default class App extends Component {
   constructor(props) {
     super(props);
-    const access_token = (location.hash.match(/\#access_token=([^&]+)/) || [])[1];
-    const token_type = (location.hash.match(/token_type=([^&]+)/) || [])[1];
-    const scope = (location.hash.match(/scope=([^&]+)/) || [])[1];
 
-    let auth_token
+    const parsedHash = queryString.parse(window.location.hash);
+    
+    let access_token = parsedHash.access_token
 
     if (access_token) {
-      auth_token = {
-        access_token: access_token,
-        token_type: token_type,
-        scope: scope
-      }
-
-      localStorage.setItem(auto_zoom_token_key, JSON.stringify(auth_token));
+      localStorage.setItem(auto_zoom_token_key, access_token);
     }
     else {
-      const local_storage_string = localStorage.getItem(auto_zoom_token_key)
-      auth_token = local_storage_string && JSON.parse(local_storage_string)
+      access_token = localStorage.getItem(auto_zoom_token_key)
     }
     
     this.state = {
@@ -85,7 +78,7 @@ export default class App extends Component {
       zoom_classes: null,
       open_zoom_classes: [],
       play_sound: false,
-      auth_token: auth_token
+      access_token: access_token
     };
   }
 
@@ -119,10 +112,10 @@ export default class App extends Component {
       }
     }, 1000)
 
-    if (this.state.auth_token  && !this.state.zoom_classes) {
+    if (this.state.access_token  && !this.state.zoom_classes) {
 
       const headers = {
-        "Authorization": `Bearer ${this.state.auth_token.access_token}`,
+        "Authorization": `Bearer ${this.state.access_token}`,
         "Content-Type": "application/json"
       }
   
@@ -143,7 +136,8 @@ export default class App extends Component {
             id: evt.id
           }}
       )
-        that.setState({ zoom_classes: simplified_events})},
+        that.setState({ zoom_classes: simplified_events})
+      },
         function(error) {
           that.setState({auth_token: null})
       })
@@ -160,7 +154,7 @@ export default class App extends Component {
   }
 
   doLogout() {
-    this.setState({auth_token: null})
+    this.setState({access_token: null})
     localStorage.removeItem(auto_zoom_token_key);
   }
   
@@ -179,7 +173,7 @@ export default class App extends Component {
   }
 
   render() {
-    if (!this.state.auth_token)
+    if (!this.state.access_token)
       return (
         <div>
         <Login />
