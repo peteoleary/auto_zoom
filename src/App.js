@@ -28,7 +28,10 @@ const TableDisplay = (props) => {
 
     removeFromArray(keys, 'id')
 
-    return (<div className="eventsTableWrapper"><table className="eventsTable"><thead>
+    return (<div className="eventsTableWrapper">
+      <h3>{props.title}</h3>
+      <table className="eventsTable">
+      <thead>
       <tr>
       {
         keys.map((key) => {
@@ -43,7 +46,7 @@ const TableDisplay = (props) => {
           return (<tr>
           {
             keys.map((key) => {
-            return <td>{formatValue(row[key])}</td>
+            return <td dangerouslySetInnerHTML={{ __html: formatValue(row[key]) }}></td>
             })}
           </tr>)
         })
@@ -52,7 +55,7 @@ const TableDisplay = (props) => {
       </table></div>
     )
   } else {
-    return <div className="tagline">No Zoom calendar events</div>
+    return <div className="tagline">{props.noEventsTitle}</div>
   }
 }
 
@@ -88,11 +91,14 @@ export default class App extends Component {
       this.state.zoom_classes.forEach(this_class => {
         const time_diff = current_time.getTime() - this_class.start_date.getTime()
         if (time_diff >= 0 && time_diff <= 1000){
-            if (that.state.open_zoom_classes.indexOf(this_class.id))
+            
+            // check to see if this class has already been opened
+            if (that.state.open_zoom_classes.findIndex(that_class => that_class.id == this_class.id))
             {
               if (that.openURL(this_class.location)) {
-                that.setState({open_zoom_classes: that.state.open_zoom_classes.concat([this_class.id])})
-                that.setState({play_sound: true})
+                that.setState({zoom_classes: this.state.zoom_classes.filter(that_class => that_class.id != this_class.id),
+                  play_sound: true, 
+                  open_zoom_classes: that.state.open_zoom_classes.concat([this_class])})
               }
             }
           }
@@ -103,7 +109,7 @@ export default class App extends Component {
 
   async componentDidMount() {
     setInterval(() => {
-      if (this.state.auth_token) {
+      if (this.state.access_token) {
         const current_time = new Date()
         this.setState({
           curTime : formatValue(current_time)
@@ -131,7 +137,7 @@ export default class App extends Component {
         const simplified_events = filtered_events.map((evt) => {
           return {
             start_date: new Date(evt.start.dateTime),
-            location: evt.location,
+            location: new URL(evt.location),
             description: evt.summary,
             id: evt.id
           }}
@@ -139,7 +145,7 @@ export default class App extends Component {
         that.setState({ zoom_classes: simplified_events})
       },
         function(error) {
-          that.setState({auth_token: null})
+          that.setState({access_token: null})
       })
     }
   }
@@ -187,11 +193,12 @@ export default class App extends Component {
           <SoundElement playSound={this.state.play_sound}/>
           </div>
 
-          <div className="tagline">
+          <div className="currentTime">
             Current time: {this.state.curTime}
           </div>
           
-          <TableDisplay data={this.state.zoom_classes} />
+          <TableDisplay data={this.state.zoom_classes} title='Upcoming events' noEventsTitle='No Zoom events'/>
+          <TableDisplay data={this.state.open_zoom_classes} title='Past events' />
         </div>
       )
   }
