@@ -30,8 +30,10 @@ function dateAdd(date, interval, units) {
       switch(val.constructor.name) {
           case 'Date':
               return val.toLocaleString()
-            default:
-                return val.toString()
+          case 'URL':
+                return `<a href='${val.toString()}' target='_blank'>${val.toString()}</a>`
+          default:
+              return val.toString()
       }
   }
 
